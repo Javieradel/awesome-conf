@@ -17,11 +17,17 @@ local menubar = require("menubar")
 --
 vicious =require("vicious")
 --
+--require("net-widgetp")
+
 local hotkeys_popup = require("awful.hotkeys_popup")
 
-
-
-
+local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
+local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
+local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+--local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -116,7 +122,15 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
-
+local cw = calendar_widget({
+    theme = 'dark',
+    placement = 'bottom_right',
+    radius = 8,
+})
+mytextclock:connect_signal("button::press", 
+    function(_, _, _, button)
+        if button == 1 then cw.toggle() end
+    end)
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -159,6 +173,7 @@ local tasklist_buttons = gears.table.join(
 
 local function set_wallpaper(s)
     -- Wallpaper
+    
     if beautiful.wallpaper then
         local wallpaper = beautiful.wallpaper
         -- If wallpaper is a function, call it with the screen
@@ -172,13 +187,14 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+beautiful.wallpaper ="/home/altair/Descargas/wallpaper0.jpg"
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
-    set_wallpaper(s)
+    --set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
-
+    awful.tag({ "code", "browser", "servers", "shell"}, s, awful.layout.layouts[1])
+    
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
@@ -222,6 +238,25 @@ awful.screen.connect_for_each_screen(function(s)
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
+            --ram_widget(),
+            --ram_widget(),
+            ram_widget({
+                timeout = 3
+            }),
+            cpu_widget({
+                width = 10,
+                step_width = 2,
+                step_spacing = 0,
+                color = '#33d1d6',
+                timeout = 3
+            }),
+            net_speed_widget(),
+            volume_widget{
+                widget_type = 'arc'
+            },
+            --todo_widget(),
+            logout_menu_widget()
+
         },
     }
 end)
@@ -378,7 +413,16 @@ clientkeys = gears.table.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
         end ,
-        {description = "(un)maximize horizontally", group = "client"})
+        {description = "(un)maximize horizontally", group = "client"}),
+
+    awful.key({}, "Print", function () awful.util.spawn("scrot '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'") end),
+    awful.key({"Control"}, "Print", function () awful.util.spawn("scrot -u -p -e 'xclip -selection clipboard -target image/png -i $f'") end),
+    -- AUTOMATICE FRONT
+    awful.key({"Shift","Control"}, "ñ",
+        function () 
+            awful.util.spawn("/home/altair/proyects/initSetup.sh")
+        end
+    )
 )
 
 -- Bind all key numbers to tags.
@@ -570,3 +614,4 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+awful.util.spawn("/home/altair/autoRandrX.sh")
