@@ -63,7 +63,7 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -188,23 +188,29 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 beautiful.wallpaper ="/home/altair/Descargas/wallpaper0.jpg"
+beautiful.get().font="poligon 14"
+
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     --set_wallpaper(s)
-
+    -- Create the wibox
+    --s.mywibox = awful.wibar({ position = "top", screen = s })
     -- Each screen has its own tag table.
-    awful.tag({ "code", "browser", "servers", "shell"}, s, awful.layout.layouts[1])
     
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
+    
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
                            awful.button({ }, 1, function () awful.layout.inc( 1) end),
                            awful.button({ }, 3, function () awful.layout.inc(-1) end),
-                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
+    --                     awful.button({ }, 4, function () awful.layout.inc( 1) end),
+                           awful.button({ }, 5, function () awful.layout.inc(-1) end)
+                            )
+                        )
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
@@ -218,47 +224,94 @@ awful.screen.connect_for_each_screen(function(s)
         filter  = awful.widget.tasklist.filter.currenttags,
         buttons = tasklist_buttons
     }
-
-    -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
-
-    -- Add widgets to the wibox
-    s.mywibox:setup {
-        layout = wibox.layout.align.horizontal,
-        { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
-            mylauncher,
-            s.mytaglist,
-            s.mypromptbox,
-        },
-        s.mytasklist, -- Middle widget
-        { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
-            wibox.widget.systray(),
-            mytextclock,
-            s.mylayoutbox,
-            --ram_widget(),
-            --ram_widget(),
-            ram_widget({
-                timeout = 3
-            }),
-            cpu_widget({
-                width = 10,
-                step_width = 2,
-                step_spacing = 0,
-                color = '#33d1d6',
-                timeout = 3
-            }),
-            net_speed_widget(),
-            volume_widget{
-                widget_type = 'arc'
+    if s.index == 1 then
+        awful.tag({ "browser", "notile"}, s, awful.layout.layouts[1])
+        s.mywibox = awful.wibar({ position = "top", screen = s })
+        s.mywibox:setup {
+            layout = wibox.layout.align.horizontal,
+            { -- Left widgets
+                layout = wibox.layout.fixed.horizontal,
+                mylauncher,
+                s.mytaglist,
+                s.mypromptbox,
             },
-            --todo_widget(),
-            logout_menu_widget()
+            s.mytasklist, -- Middle widget
+            { -- Right widgets
+                layout = wibox.layout.fixed.horizontal,
+               --mykeyboardlayout,
+                wibox.widget.systray(),
+                mytextclock,
+                s.mylayoutbox,
+                --ram_widget(),
+                --ram_widget(),
+                ram_widget({
+                    timeout = 3
+                }),
+                cpu_widget({
+                    width = 10,
+                    step_width = 2,
+                    step_spacing = 0,
+                    color = '#33d1d6',
+                    timeout = 3
+                }),
+                net_speed_widget(),
+                --volume_widget{
+                --    widget_type = 'arc'
+                --},
+                --todo_widget(),
+                logout_menu_widget()
+    
+            },
+        }
+    end
+    
+    
+    if s.index == 2 then
+        awful.tag({ "code", "servers"}, s, awful.layout.layouts[1])
 
-        },
-    }
+        s.mywibox = awful.wibar({ position = "top", screen = s })
+
+        s.mywibox:setup {
+            layout = wibox.layout.align.horizontal,
+            { -- Left widgets
+                layout = wibox.layout.fixed.horizontal,
+                mylauncher,
+                s.mytaglist,
+                s.mypromptbox,
+            },
+            s.mytasklist, -- Middle widget
+            { -- Right widgets
+                layout = wibox.layout.fixed.horizontal,
+               --mykeyboardlayout,
+                wibox.widget.systray(),
+                mytextclock,
+                s.mylayoutbox,
+                --ram_widget(),
+                --ram_widget(),
+                --ram_widget({
+                --    timeout = 3
+                --}),
+                --cpu_widget({
+                --    width = 10,
+                --    step_width = 2,
+                --    step_spacing = 0,
+                --    color = '#33d1d6',
+                --    timeout = 3
+                --}),
+                --net_speed_widget(),
+                --volume_widget{
+                --    widget_type = 'arc'
+                --},
+                --todo_widget(),
+                --logout_menu_widget()
+    
+            },
+        }
+
+
+    end
+  
+
 end)
 -- }}}
 
