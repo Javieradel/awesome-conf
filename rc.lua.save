@@ -16,55 +16,18 @@ local menubar = require("menubar")
 -- vicious
 --
 vicious =require("vicious")
-
---COMPOSITOR
-    awful.util.spawn("compton")
 --
+--require("net-widgetp")
 
 local hotkeys_popup = require("awful.hotkeys_popup")
----[[ 
-
-
-
-
- --]]
 
 local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
-local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+--local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
 local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
-local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-local run_shell = require("awesome-wm-widgets.run-shell-3.run-shell")
-
+--local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 --local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
--- temperature
-      termalWidget = awful.widget.watch(
-        'cat /sys/class/thermal/thermal_zone0/temp', 1,
-        function(widget, stdout)
-          local temp = string.match(stdout, "(%d%d)%d%d%d")
-          widget:set_text('  '.. temp .. "°C" .. "  ")
-          if tonumber(temp) >= 65 then 
-            naughty.notify({ preset = naughty.config.presets.critical,
-            title = "Higth Temp",
-            text = temp .. "°C" })
-          end
-
-          return
-        end)
-    
---    left = 8,
---    right = 8,
---    widget = wibox.container.margin
-
-
---[[ 
-
-
-
-
-
-    ]]
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -97,54 +60,12 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
---beautiful.init(gears.filesystem.get_themes_dir() .. "gtk/theme.lua")
---beautiful.init(dofile("./theme/gtk/theme.lua"))
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
 editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
-currentWorknames = {
-    --"marfix",
-    --"ferrenervados",
-    --"learn-vue"
-}
-currentWork = {
-    "marfix/marfix",
-    --"ferrenervados",
-    --"aprendizaje-vue"
-}
 
-menusCW ={}
-for i=1, #currentWork do
-    menusCW[i]= {
-        {   'open Code',
-            terminal .. " -e code " .. currentWork[i]
-        },
-        {   'open CMD',
-             --terminal .. " --hold && cd " .. currentWork[i]
-             "cd " .. currentWork[i]..'; '..terminal
-            },
-        {   'open run dev',
-             terminal .. " -e cd " .. currentWork[i] .. " && npm run dev"
-        }
-    }
-end
-awMenus={}
-it ={}
-for i=1, #currentWork do
-    
-    awMenus[i]=
-        {
-            currentWorknames[i],
-            menusCW[i],
-            beautiful.menu_submenu
-        }
-    
-    
-    it[i] = awMenus[i]
-end
--- Def
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
@@ -172,26 +93,21 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.se,
 }
 -- }}}
+
 -- {{{ Menu
 -- Create a launcher widget and a main menu
-
 myawesomemenu = {
-    { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-    --{ "manual", terminal .. " -e man awesome" },
-    { "edit config", editor_cmd .. " " .. awesome.conffile },
-    { "restart", awesome.restart },
-    --{ "quit", function() awesome.quit() end },
+   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
+   { "manual", terminal .. " -e man awesome" },
+   { "edit config", editor_cmd .. " " .. awesome.conffile },
+   { "restart", awesome.restart },
+   { "quit", function() awesome.quit() end },
 }
 
-mymainmenu = awful.menu( {items = it} )
- 
---    mymainmenu = awful.menu({ items = { 
---        { "open terminal", terminal },
---        { "Code Marfix", terminal .. " -e code" .. currentWorkMarfix },
---        { "awesome", myawesomemenu, beautiful.awesome_icon },
---    }
---})
-
+mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+                                    { "open terminal", terminal }
+                                  }
+                        })
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
@@ -269,22 +185,18 @@ local function set_wallpaper(s)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-beautiful.wallpaper ="/home/altair/Descargas/wallpaper0.jpg"
-beautiful.get().font="sans 8"
-
 screen.connect_signal("property::geometry", set_wallpaper)
 
-
+beautiful.wallpaper ="/home/altair/Descargas/wallpaper0.jpg"
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     --set_wallpaper(s)
-    -- Create the wibox
-    --s.mywibox = awful.wibar({ position = "top", screen = s })
+
     -- Each screen has its own tag table.
+    awful.tag({ "code", "browser", "servers", "notile"}, s, awful.layout.layouts[1])
     
     -- Create a promptbox for each screen
-    --s.mypromptbox = awful.widget.prompt()
-    
+    s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -292,93 +204,61 @@ awful.screen.connect_for_each_screen(function(s)
                            awful.button({ }, 1, function () awful.layout.inc( 1) end),
                            awful.button({ }, 3, function () awful.layout.inc(-1) end),
                            awful.button({ }, 4, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(-1) end)
-                            )
-                        )
+                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
         buttons = taglist_buttons
     }
-    if s.index == 1 then
-        awful.tag({ "browser","servers", "notile"}, s, awful.layout.layouts[1])
-        beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper0.jpg' 
-        set_wallpaper(1)
-        s.mywibox = awful.wibar({ position = "bottom", screen = s })
-        s.mywibox:setup {
-            layout = wibox.layout.align.horizontal,
-            { -- Left widgets
-                layout = wibox.layout.fixed.horizontal,
-                --mylauncher,
-                s.mytaglist,
-                termalWidget,
 
-                --s.mypromptbox,
-            },
-            s.mytasklist, -- Middle widget
-            { -- Right widgets
-                layout = wibox.layout.fixed.horizontal,
-               --mykeyboardlayout,
-                wibox.widget.systray(),
-                mytextclock,
-                s.mylayoutbox,
-                --ram_widget(),
-                --ram_widget(),
-                ram_widget({
-                    timeout = 3,
-                    widget_show_buf= false
-                }),
-                cpu_widget({
-                    width = 30,
-                    step_width = 2,
-                    step_spacing = 1,
-                    color = '#33d1d6',
-                    timeout = 1
-                }),
-                net_speed_widget(),
-                -- volume_widget{
-                --    widget_type = 'arc'
-                --},
-                --todo_widget(),
-                logout_menu_widget()
-    
-            },
-        }
-    end
-    
-    
-    if s.index == 2 then
-        awful.tag({ "code", "servers","notile"}, s, awful.layout.layouts[1])
-        beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper2.jpg' 
-        set_wallpaper(2)
-        s.mywibox = awful.wibar({ position = "bottom", screen = s })
+    -- Create a tasklist widget
+    s.mytasklist = awful.widget.tasklist {
+        screen  = s,
+        filter  = awful.widget.tasklist.filter.currenttags,
+        buttons = tasklist_buttons
+    }
 
-        s.mywibox:setup {
-            layout = wibox.layout.align.horizontal,
-            { -- Left widgets
-                layout = wibox.layout.fixed.horizontal,
-                --mylauncher,
-                s.mytaglist,
-                --s.mypromptbox,
-            },
-            s.mytasklist, -- Middle widget
-            { -- Right widgets
-                layout = wibox.layout.fixed.horizontal,
-               --mykeyboardlayout,
-                wibox.widget.systray(),
-                --mytextclock,
-                 volume_widget{
-                    widget_type = 'arc'
-                },
-                s.mylayoutbox,
-            },
-        }
+    -- Create the wibox
+    s.mywibox = awful.wibar({ position = "top", screen = s })
 
+    -- Add widgets to the wibox
+    s.mywibox:setup {
+        layout = wibox.layout.align.horizontal,
+        { -- Left widgets
+            layout = wibox.layout.fixed.horizontal,
+            mylauncher,
+            s.mytaglist,
+            s.mypromptbox,
+        },
+        s.mytasklist, -- Middle widget
+        { -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+           --mykeyboardlayout,
+            wibox.widget.systray(),
+            mytextclock,
+            s.mylayoutbox,
+            --ram_widget(),
+            --ram_widget(),
+            --ram_widget({
+            --    timeout = 3
+            --}),
+            cpu_widget({
+                width = 10,
+                step_width = 2,
+                step_spacing = 0,
+                color = '#33d1d6',
+                timeout = 3
+            }),
+            net_speed_widget(),
+            --volume_widget{
+            --    widget_type = 'arc'
+            --},
+            --todo_widget(),
+            logout_menu_widget()
 
-    end
-  
-
+        },
+    }
 end)
 -- }}}
 
@@ -474,18 +354,18 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () run_shell.launch() end,
+    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey }, "x",
-              --[[ function ()
+              function ()
                   awful.prompt.run {
                     prompt       = "Run Lua code: ",
                     textbox      = awful.screen.focused().mypromptbox.widget,
                     exe_callback = awful.util.eval,
                     history_path = awful.util.get_cache_dir() .. "/history_eval"
                   }
-              end, ]]
+              end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
@@ -668,12 +548,6 @@ awful.rules.rules = {
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
-    { rule = { class = "Code" },
-       properties = { screen = 2, tag = "code" } },
-    { rule = { class = "Brave" },
-    properties = { screen = 1, tag = "browser" } },
-    { rule = { class = terminal },
-    properties = { opacity = 0.25 } },
 }
 -- }}}
 
@@ -707,7 +581,6 @@ client.connect_signal("request::titlebars", function(c)
     )
 
     awful.titlebar(c) : setup {
-        bg_normal = '#323232',
         { -- Left
             awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
@@ -724,8 +597,8 @@ client.connect_signal("request::titlebars", function(c)
         { -- Right
             awful.titlebar.widget.floatingbutton (c),
             awful.titlebar.widget.maximizedbutton(c),
-            --awful.titlebar.widget.stickybutton   (c),
-            --awful.titlebar.widget.ontopbutton    (c),
+            awful.titlebar.widget.stickybutton   (c),
+            awful.titlebar.widget.ontopbutton    (c),
             awful.titlebar.widget.closebutton    (c),
             layout = wibox.layout.fixed.horizontal()
         },
