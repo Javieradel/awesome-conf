@@ -44,11 +44,11 @@ local run_shell = require("awesome-wm-widgets.run-shell-3.run-shell")
         function(widget, stdout)
           local temp = string.match(stdout, "(%d%d)%d%d%d")
           widget:set_text('  '.. temp .. "°C" .. "  ")
-          if tonumber(temp) >= 65 then 
-            naughty.notify({ preset = naughty.config.presets.critical,
-            title = "Higth Temp",
-            text = temp .. "°C" })
-          end
+         -- if tonumber(temp) >= 65 then 
+         -- naughty.notify({ preset = naughty.config.presets.critical,
+         --   title = "Higth Temp",
+         --   text = temp .. "°C" })
+         -- end
 
           return
         end)
@@ -269,7 +269,7 @@ local function set_wallpaper(s)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-beautiful.wallpaper ="/home/altair/Descargas/wallpaper0.jpg"
+--beautiful.wallpaper ="/home/altair/Descargas/tenor.gif"
 beautiful.get().font="sans 8"
 
 screen.connect_signal("property::geometry", set_wallpaper)
@@ -301,9 +301,15 @@ awful.screen.connect_for_each_screen(function(s)
         filter  = awful.widget.taglist.filter.all,
         buttons = taglist_buttons
     }
+    s.mytasklist = awful.widget.tasklist {
+        screen  = s,
+        filter  = awful.widget.tasklist.filter.currenttags,
+        buttons = tasklist_buttons
+    }
     if s.index == 1 then
         awful.tag({ "browser","servers", "notile"}, s, awful.layout.layouts[1])
-        beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper0.jpg' 
+        --beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper0.jpg' 
+        beautiful.wallpaper= '/home/altair/Descargas/imgs/wall3.jpg' 
         set_wallpaper(1)
         s.mywibox = awful.wibar({ position = "bottom", screen = s })
         s.mywibox:setup {
@@ -350,7 +356,7 @@ awful.screen.connect_for_each_screen(function(s)
     
     if s.index == 2 then
         awful.tag({ "code", "servers","notile"}, s, awful.layout.layouts[1])
-        beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper2.jpg' 
+        beautiful.wallpaper= '/home/altair/Descargas/imgs/wall2.jpg' 
         set_wallpaper(2)
         s.mywibox = awful.wibar({ position = "bottom", screen = s })
 
@@ -477,7 +483,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "r",     function () run_shell.launch() end,
               {description = "run prompt", group = "launcher"}),
 
-    awful.key({ modkey }, "x",
+    --xxxxxxxxawful.key({ modkey }, "x",
               --[[ function ()
                   awful.prompt.run {
                     prompt       = "Run Lua code: ",
@@ -486,7 +492,7 @@ globalkeys = gears.table.join(
                     history_path = awful.util.get_cache_dir() .. "/history_eval"
                   }
               end, ]]
-              {description = "lua execute prompt", group = "awesome"}),
+              --{description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"})
@@ -501,14 +507,19 @@ clientkeys = gears.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
+            
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
+   
+              awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
+
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
+
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-              {description = "toggle keep on top", group = "client"}),
+                {description = "toggle keep on top", group = "client"}),
+
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
@@ -516,7 +527,8 @@ clientkeys = gears.table.join(
             c.minimized = true
         end ,
         {description = "minimize", group = "client"}),
-    awful.key({ modkey,           }, "m",
+    
+        awful.key({ modkey,           }, "m",
         function (c)
             c.maximized = not c.maximized
             c:raise()
@@ -537,6 +549,7 @@ clientkeys = gears.table.join(
 
     awful.key({}, "Print", function () awful.util.spawn("scrot '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'") end),
     awful.key({"Control"}, "Print", function () awful.util.spawn("scrot -u -p -e 'xclip -selection clipboard -target image/png -i $f'") end),
+   
     -- AUTOMATICE FRONT
     awful.key({"Shift","Control"}, "ñ",
         function () 
@@ -618,15 +631,16 @@ root.keys(globalkeys)
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = awful.client.focus.filter,
-                     raise = true,
-                     keys = clientkeys,
-                     buttons = clientbuttons,
-                     screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
-     }
+        properties = {
+                    border_width = beautiful.border_width,
+                    border_color = beautiful.border_normal,
+                    focus = awful.client.focus.filter,
+                    raise = true,
+                    keys = clientkeys,
+                    buttons = clientbuttons,
+                    screen = awful.screen.preferred,
+                    placement = awful.placement.no_overlap+awful.placement.no_offscreen
+        }
     },
 
     -- Floating clients.
