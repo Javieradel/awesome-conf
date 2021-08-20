@@ -36,8 +36,7 @@ local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed"
 local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 local run_shell = require("awesome-wm-widgets.run-shell-3.run-shell")
-
---local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
+local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
 -- temperature
       termalWidget = awful.widget.watch(
         'cat /sys/class/thermal/thermal_zone0/temp', 1,
@@ -373,6 +372,7 @@ awful.screen.connect_for_each_screen(function(s)
                 layout = wibox.layout.fixed.horizontal,
                --mykeyboardlayout,
                 wibox.widget.systray(),
+                todo_widget(),
                 --mytextclock,
                  volume_widget{
                     widget_type = 'arc'
