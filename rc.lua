@@ -274,6 +274,26 @@ beautiful.get().font="sans 8"
 screen.connect_signal("property::geometry", set_wallpaper)
 
 
+meTextbox = wibox.widget{
+    markup = 'This <i>is</i> a <b>textbox</b>!!!',
+    align  = 'center',
+    valign = 'center',
+    widget = wibox.widget.textbox
+}
+ajap= awful.wibox {
+    bg  = beautiful.bg_normal,
+    --border_color = '#00ff00',
+    --border_width = 5,
+    --placement    = awful.placement.top_left,
+    --shape        = gears.shape.rounded_rect,
+    position     = 'left',
+    visible      = false,
+    ontop        = true,
+    width        = 480,
+    --height       = 480,
+    --x = 300,
+    --y = 250
+}
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     --set_wallpaper(s)
@@ -306,7 +326,37 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = tasklist_buttons
     }
     if s.index == 1 then
-        awful.tag({ "browser","servers", "notile"}, s, awful.layout.layouts[1])
+        s.ajap = ajap
+
+        --awful.tag({ "browser","servers", "notile"}, s, awful.layout.layouts[1])
+        awful.tag.add("browser", {
+            icon               = "/home/altair/Imagenes/globe2.svg",
+            layout             = awful.layout.suit.tile,
+            --master_fill_policy = "master_width_factor",
+            gap_single_client  = true,
+            --gap                = 15,
+            screen             = s,
+            selected           = true,
+        })
+        awful.tag.add("shells", {
+            --icon               = "/path/to/icon1.png",
+            layout             = awful.layout.layouts[12],
+            --master_fill_policy = "master_width_factor",
+            --gap_single_client  = true,
+            --gap                = 15,
+            screen             = s,
+            selected           = false,
+        })
+        awful.tag.add("notile", {
+            --icon               = "/path/to/icon1.png",
+            layout             = awful.layout.layouts[10],
+            --master_fill_policy = "master_width_factor",
+            --gap_single_client  = true,
+            --gap                = 15,
+            screen             = s,
+            selected           = false,
+        })
+
         --beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper0.jpg' 
         beautiful.wallpaper= '/home/altair/Descargas/imgs/wall3.jpg' 
         set_wallpaper(1)
@@ -324,7 +374,7 @@ awful.screen.connect_for_each_screen(function(s)
             s.mytasklist, -- Middle widget
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
-               --mykeyboardlayout,
+                --mykeyboardlayout,
                 wibox.widget.systray(),
                 mytextclock,
                 s.mylayoutbox,
@@ -332,7 +382,8 @@ awful.screen.connect_for_each_screen(function(s)
                 --ram_widget(),
                 ram_widget({
                     timeout = 3,
-                    widget_show_buf= false
+                    widget_show_buf= true,
+                    color_buf="#663232"
                 }),
                 cpu_widget({
                     width = 30,
