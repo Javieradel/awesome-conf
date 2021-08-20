@@ -752,6 +752,37 @@ client.connect_signal("request::titlebars", function(c)
     }
 end)
 
+-- run garbage collector
+--
+  gears.timer {
+        timeout = 30,
+        autostart = true,
+        callback = function() collectgarbage() end
+  }
+-- run garbage collector
+--
+--[[ descanso = gears.timer {
+    timeout = 1800,
+    autostart = true,
+    callback = function(this)
+
+        naughty.notify({
+            timeout= 4,
+            width= 1600,    
+            preset = naughty.config.presets.normal,
+            title = "TOMATE UN DESCANSO",
+            text = 'Han Pasado 30Min',
+            bg= "#f2f542",
+            fg= "#000",
+            position="bottom_right",
+            run= function(this)
+                this.die()
+            end    
+        })
+        this.again()
+   end
+} ]]
+
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
