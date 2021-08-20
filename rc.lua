@@ -354,7 +354,36 @@ awful.screen.connect_for_each_screen(function(s)
     
     
     if s.index == 2 then
-        awful.tag({ "code", "servers","notile"}, s, awful.layout.layouts[1])
+        --awful.tag({ "code", "servers","notile"}, s, awful.layout.layouts[1])
+        awful.tag.add("code", {
+            --icon               = "/path/to/icon1.png",
+            layout             = awful.layout.suit.tile,
+            --master_fill_policy = "master_width_factor",
+            gap_single_client  = true,
+            --gap                = 15,
+            screen             = s,
+            selected           = true,
+        })
+        awful.tag.add("shells", {
+            --icon               = "/path/to/icon1.png",
+            layout             = awful.layout.layouts[12],
+            --master_fill_policy = "master_width_factor",
+            --gap_single_client  = true,
+            --gap                = 15,
+            screen             = s,
+            selected           = false,
+        })
+        awful.tag.add("notile", {
+            --icon               = "/path/to/icon1.png",
+            layout             = awful.layout.layouts[10],
+            --master_fill_policy = "master_width_factor",
+            --gap_single_client  = true,
+            --gap                = 15,
+            screen             = s,
+            selected           = false,
+        })
+        
+        
         beautiful.wallpaper= '/home/altair/Descargas/imgs/wall2.jpg' 
         set_wallpaper(2)
         s.mywibox = awful.wibar({ position = "bottom", screen = s })
