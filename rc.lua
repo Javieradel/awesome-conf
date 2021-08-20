@@ -137,7 +137,7 @@ end
 awMenus={}
 it ={}
 for i=1, #currentWork do
-    
+
     awMenus[i]=
         {
             currentWorknames[i],
@@ -187,18 +187,17 @@ myawesomemenu = {
     --{ "quit", function() awesome.quit() end },
 }
 
-mymainmenu = awful.menu( {items = it} )
+--mymainmenu = awful.menu( {items = it} )
+
+    mymainmenu = awful.menu({ items = { 
+        { "open terminal", terminal },
+        --{ "Code Marfix", terminal .. " -e code" .. currentWorkMarfix },
+        { "awesome", myawesomemenu, beautiful.awesome_icon },
+    }
+})
  
---    mymainmenu = awful.menu({ items = { 
---        { "open terminal", terminal },
---        { "Code Marfix", terminal .. " -e code" .. currentWorkMarfix },
---        { "awesome", myawesomemenu, beautiful.awesome_icon },
---    }
---})
-
-
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
+                                        menu = mymainmenu })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
