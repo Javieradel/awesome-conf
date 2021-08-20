@@ -43,11 +43,16 @@ local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
         function(widget, stdout)
           local temp = string.match(stdout, "(%d%d)%d%d%d")
           widget:set_text('  '.. temp .. "°C" .. "  ")
-         -- if tonumber(temp) >= 65 then 
-         -- naughty.notify({ preset = naughty.config.presets.critical,
-         --   title = "Higth Temp",
-         --   text = temp .. "°C" })
-         -- end
+          if tonumber(temp) >= 65 then 
+          naughty.notify({  preset = naughty.config.presets.normal,
+                            title = "Higth Temp",
+                            text = temp .. "°C",
+                            bg="#323232"
+
+
+        
+            })
+          end
 
           return
         end)
