@@ -18,7 +18,7 @@ local menubar = require("menubar")
 vicious =require("vicious")
 
 --COMPOSITOR
-    awful.util.spawn("compton")
+  awful.util.spawn("compton")
 --
 
 local hotkeys_popup = require("awful.hotkeys_popup")
