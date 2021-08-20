@@ -689,6 +689,8 @@ awful.rules.rules = {
        properties = { screen = 2, tag = "code" } },
     { rule = { class = "Brave" },
     properties = { screen = 1, tag = "browser" } },
+    { rule = { class = "Firefox" },
+    properties = { screen = 1, tag = "browser" } },
     { rule = { class = terminal },
     properties = { opacity = 0.25 } },
 }
