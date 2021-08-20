@@ -144,8 +144,8 @@ for i=1, #currentWork do
             menusCW[i],
             beautiful.menu_submenu
         }
-    
-    
+
+
     it[i] = awMenus[i]
 end
 -- Def
