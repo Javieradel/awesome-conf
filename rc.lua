@@ -273,6 +273,24 @@ beautiful.get().font="sans 8"
 
 screen.connect_signal("property::geometry", set_wallpaper)
 
+local popup = awful.popup {
+    forced_width    = 480,
+    forced_height   = 480,
+    width= 400,
+    border_width=2,
+    border_color= "#FF0000",
+    --
+    ontop = true,
+    visible = true,
+    --shape = function(cr, width, height)
+    --    gears.shape.rounded_rect(cr, width, height, 4)
+    --end,
+    --border_width = 1,
+    --border_color = beautiful.bg_focus,
+    --maximum_width = 400,
+    --offset = { y = 5 },
+    widget = {}
+}
 
 meTextbox = wibox.widget{
     markup = 'This <i>is</i> a <b>textbox</b>!!!',
