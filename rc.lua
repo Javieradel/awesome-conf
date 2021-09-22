@@ -15,20 +15,19 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 -- vicious
 --
-vicious =require("vicious")
+ vicious =require("vicious")
 
 --COMPOSITOR
-  awful.util.spawn("compton")
+--  awful.util.spawn("compton")
 --
-
+awful.util.spawn("picom")
 local hotkeys_popup = require("awful.hotkeys_popup")
 ---[[ 
 
 
 
-
  --]]
-
+--require("ayu-import.lua")
 local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
@@ -48,9 +47,6 @@ local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
                             title = "Higth Temp",
                             text = temp .. "°C",
                             bg="#323232"
-
-
-        
             })
           end
 
@@ -100,7 +96,9 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+--beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+
+beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), 'default'))
 --beautiful.init(gears.filesystem.get_themes_dir() .. "gtk/theme.lua")
 --beautiful.init(dofile("./theme/gtk/theme.lua"))
 
@@ -108,46 +106,8 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 terminal = "alacritty"
 editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
-currentWorknames = {
-    --"marfix",
-    --"ferrenervados",
-    --"learn-vue"
-}
-currentWork = {
-    "marfix/marfix",
-    --"ferrenervados",
-    --"aprendizaje-vue"
-}
-
-menusCW ={}
-for i=1, #currentWork do
-    menusCW[i]= {
-        {   'open Code',
-            terminal .. " -e code " .. currentWork[i]
-        },
-        {   'open CMD',
-             --terminal .. " --hold && cd " .. currentWork[i]
-             "cd " .. currentWork[i]..'; '..terminal
-            },
-        {   'open run dev',
-             terminal .. " -e cd " .. currentWork[i] .. " && npm run dev"
-        }
-    }
-end
-awMenus={}
-it ={}
-for i=1, #currentWork do
-
-    awMenus[i]=
-        {
-            currentWorknames[i],
-            menusCW[i],
-            beautiful.menu_submenu
-        }
 
 
-    it[i] = awMenus[i]
-end
 -- Def
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -351,16 +311,16 @@ awful.screen.connect_for_each_screen(function(s)
         s.ajap = ajap
 
         --awful.tag({ "browser","servers", "notile"}, s, awful.layout.layouts[1])
-        awful.tag.add("browser", {
-            icon               = "/home/altair/Imagenes/globe2.svg",
-            layout             = awful.layout.suit.tile,
+        awful.tag.add(" ", {
+            --icon               = "/home/altair/Imagenes/globe2.svg",
+            layout             = awful.layout.layouts[10],
             --master_fill_policy = "master_width_factor",
             gap_single_client  = true,
             --gap                = 15,
             screen             = s,
             selected           = true,
         })
-        awful.tag.add("shells", {
+        awful.tag.add(" ", {
             --icon               = "/path/to/icon1.png",
             layout             = awful.layout.layouts[12],
             --master_fill_policy = "master_width_factor",
@@ -369,7 +329,7 @@ awful.screen.connect_for_each_screen(function(s)
             screen             = s,
             selected           = false,
         })
-        awful.tag.add("notile", {
+        awful.tag.add(" ", {
             --icon               = "/path/to/icon1.png",
             layout             = awful.layout.layouts[10],
             --master_fill_policy = "master_width_factor",
@@ -379,8 +339,8 @@ awful.screen.connect_for_each_screen(function(s)
             selected           = false,
         })
 
-        --beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper0.jpg' 
-        beautiful.wallpaper= '/home/altair/Descargas/imgs/wall3.jpg' 
+        beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper11.jpg' 
+        --beautiful.wallpaper= '/home/altair/Descargas/imgs/wall3.jpg' 
         set_wallpaper(1)
         s.mywibox = awful.wibar({ position = "bottom", screen = s })
         s.mywibox:setup {
@@ -428,16 +388,16 @@ awful.screen.connect_for_each_screen(function(s)
     
     if s.index == 2 then
         --awful.tag({ "code", "servers","notile"}, s, awful.layout.layouts[1])
-        awful.tag.add("code", {
+        awful.tag.add(" ", {
             --icon               = "/path/to/icon1.png",
-            layout             = awful.layout.suit.tile,
+            layout             = awful.layout.layouts[12],
             --master_fill_policy = "master_width_factor",
             gap_single_client  = true,
             --gap                = 15,
             screen             = s,
             selected           = true,
         })
-        awful.tag.add("shells", {
+        awful.tag.add(" ", {
             --icon               = "/path/to/icon1.png",
             layout             = awful.layout.layouts[12],
             --master_fill_policy = "master_width_factor",
@@ -446,7 +406,7 @@ awful.screen.connect_for_each_screen(function(s)
             screen             = s,
             selected           = false,
         })
-        awful.tag.add("notile", {
+        awful.tag.add(" ", {
             --icon               = "/path/to/icon1.png",
             layout             = awful.layout.layouts[10],
             --master_fill_policy = "master_width_factor",
@@ -457,7 +417,8 @@ awful.screen.connect_for_each_screen(function(s)
         })
         
         
-        beautiful.wallpaper= '/home/altair/Descargas/imgs/wall2.jpg' 
+        --beautiful.wallpaper= '/home/altair/Descargas/imgs/wall2.jpg' 
+        beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper00.jpg' 
         set_wallpaper(2)
         s.mywibox = awful.wibar({ position = "bottom", screen = s })
 
@@ -783,18 +744,30 @@ awful.rules.rules = {
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = true }
     },
-
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
     { rule = { class = "Code" },
-       properties = { screen = 2, tag = "code" } },
+       properties = { screen = 2, tag = " " } },
     { rule = { class = "Brave" },
-    properties = { screen = 1, tag = "browser" } },
+    properties = { screen = 1, tag = " " } },
     { rule = { class = "Firefox" },
-    properties = { screen = 1, tag = "browser" } },
-    { rule = { class = terminal },
-    properties = { opacity = 0.25 } },
+    properties = { screen = 1, tag = " " } },
+    { rule = { class = 'Alacritty' },
+    properties = { border_width=2  } },
+    {rule = {class = "Telegram"},
+     properties = {tag = " " }
+    }, 
+    {rule = {name = "DevTools"},
+     properties = {tag = " ", screen=2, maximized_vertical = true}
+    },
+    {
+      rule={class="browser"},
+      properties={opacity=0.9,}
+    }
+    --
+    --
+    --
 }
 -- }}}
 
@@ -894,4 +867,3 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 awful.util.spawn("/home/altair/autoRandrX.sh")
-awesome.spawn("sudo swapon /dev/sde1")
