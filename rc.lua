@@ -13,6 +13,9 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+
+local xresources = require("beautiful.xresources")
+local dpi = xresources.apply_dpi
 -- vicious
 --
  vicious =require("vicious")
