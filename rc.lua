@@ -21,7 +21,7 @@ local dpi = xresources.apply_dpi
  vicious =require("vicious")
 
 --COMPOSITOR
---  awful.util.spawn("compton")
+-- awful.util.spawn("compton")
 --
 awful.util.spawn("picom")
 local hotkeys_popup = require("awful.hotkeys_popup")
@@ -638,6 +638,14 @@ for i = 1, 9 do
                         local screen = awful.screen.focused()
                         local tag = screen.tags[i]
                         if tag then
+                            local s = awful.screen.focused()
+                                s.wiboxModKeyW.visible= not s.wiboxModKeyW.visible
+                                gears.timer.start_new(
+                                    1,
+                                    function()
+                                        s.wiboxModKeyW.visible= not s.wiboxModKeyW.visible
+                                    end
+                                )
                            tag:view_only()
                         end
                   end,
