@@ -5,6 +5,7 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
+local gears = require("gears")
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
@@ -13,7 +14,11 @@ local theme = {}
 
 theme.font          = "HackNerdFont 8"
 active= '#24abc5'
-font_to_tags= "HackNerdFont 12"
+font_to_tags= "HackNerdFont 32"
+--font_to_tags= "Digital7 32"
+--theme.font_to_clock= "LLPIXEL3"
+theme.font_to_clock= "DS-Digital 12"
+
 --theme.bg_normal     = "#222222"
 theme.bg_normal     = "#000000"
 --theme.bg_focus      = "#535d6c"
@@ -34,8 +39,11 @@ theme.border_focus  = active
 theme.border_marked = "#91231c"
 
 theme.taglist_font  = font_to_tags
-theme.taglist_spacing = dpi(2)
+theme.taglist_spacing = dpi(18)
 theme.taglist_fg_focus = active
+--qtheme.taglist_shape = gears.shape.circle
+
+-- theme.tag.master_width_factor = 2
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
@@ -50,12 +58,12 @@ theme.taglist_fg_focus = active
 --theme.taglist_bg_focus = "#ff0000"
 
 -- Generate taglist squares:
-local taglist_square_size = dpi(4)
+local taglist_square_size = dpi(6)
 theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
     taglist_square_size, theme.fg_normal
 )
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-    taglist_square_size, theme.fg_normal
+    taglist_square_size, theme.fg_urgent
 )
 
 -- Variables set for theming notifications:
