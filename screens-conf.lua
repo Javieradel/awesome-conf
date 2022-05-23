@@ -276,7 +276,6 @@ awful.screen.connect_for_each_screen(
     
 awful.screen.connect_for_each_screen(function(s)
     if s.index == 1 then
-        
         local ram_widget_conf = {
           timeout = 3,
           widget_show_buf= true,
@@ -331,7 +330,20 @@ awful.screen.connect_for_each_screen(function(s)
         --beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper11.jpg' 
         --beautiful.wallpaper= '/home/altair/Descargas/imgs/wall3.jpg' 
         --set_wallpaper(1)
-        s.mywibox = awful.wibar({ position = "bottom", screen = s, visible = false })
+        s.wiboxScreenBroken = awful.wibar({
+          position = "bottom",
+          screen = s,
+          visible = false,
+          bg  = beautiful.bg_normal .. "00",
+          border_color = '#24abc5',
+          border_width = 3,
+          visible      = true,
+          ontop        = true,
+          height       = 34,
+          shape        = gears.shape.rounded_rect,
+        })
+        
+        s.mywibox = awful.wibar({ position = "top", screen = s, visible = false })
         s.mywibox:setup {
             visible = true,
             layout = wibox.layout.align.horizontal,

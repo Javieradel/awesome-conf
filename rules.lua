@@ -56,20 +56,20 @@ local beautiful = require("beautiful")
   -- Set Firefox to always map on the tag named "2" on screen 1.
   -- { rule = { class = "Firefox" },
   --   properties = { screen = 1, tag = "2" } },
-  { rule = { class = "Code" },
-     properties = { screen = 2, tag = " ", titlebars_enabled = false } },
-  { rule = { class = "Brave" },
-  properties = { screen = 1, tag = " ", opacity=0 } },
-  { rule = { class = "Firefox" },
-  properties = { screen = 1, tag = " " } },
-  { rule = { class = 'Alacritty' },
-  properties = { border_width=2, opacity = 0  } },
-  {rule = {class = "Telegram"},
-   properties = {tag = " " }
-  }, 
-  {rule = {name = "DevTools"},
-   properties = {tag = " ", screen=2, maximized_vertical = true}
-  },
+  --{ rule = { class = "Code" },
+  --   properties = { screen = 2, tag = " ", titlebars_enabled = false } },
+  --{ rule = { class = "Brave" },
+  --properties = { screen = 1, tag = " ", opacity=0 } },
+  --{ rule = { class = "Firefox" },
+  --properties = { screen = 1, tag = " " } },
+  --{ rule = { class = 'Alacritty' },
+  --properties = { border_width=2, opacity = 0  } },
+  --{rule = {class = "Telegram"},
+  -- properties = {tag = " " }
+  --}, 
+  --{rule = {name = "DevTools"},
+  -- properties = {tag = " ", screen=2, maximized_vertical = true}
+  --},
   {
     rule={class="browser"},
     properties={opacity=0.9,}
