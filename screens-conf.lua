@@ -277,7 +277,7 @@ awful.screen.connect_for_each_screen(
 awful.screen.connect_for_each_screen(function(s)
     if s.index == 1 then
         local ram_widget_conf = {
-          timeout = 3,
+          timeout = 15,
           widget_show_buf= true,
           color_buf="#663232"
         }
@@ -291,7 +291,7 @@ awful.screen.connect_for_each_screen(function(s)
         --awful.tag({ "browser","servers", "notile"}, s, awful.layout.layouts[1])
         awful.tag.add(" ", {
             --icon               = "/home/altair/Imagenes/globe2.svg",
-            -- layout             = awful.layout.layouts[10],
+            --layout             = awful.layout.layouts[9],
             --master_fill_policy = "master_width_factor",
             gap_single_client  = true,
             --gap                = 15,
