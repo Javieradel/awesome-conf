@@ -330,18 +330,7 @@ awful.screen.connect_for_each_screen(function(s)
         --beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper11.jpg' 
         --beautiful.wallpaper= '/home/altair/Descargas/imgs/wall3.jpg' 
         --set_wallpaper(1)
-        s.wiboxScreenBroken = awful.wibar({
-          position = "bottom",
-          screen = s,
-          visible = false,
-          bg  = beautiful.bg_normal .. "00",
-          border_color = '#24abc5',
-          border_width = 3,
-          visible      = true,
-          ontop        = true,
-          height       = 34,
-          shape        = gears.shape.rounded_rect,
-        })
+        
         
         s.mywibox = awful.wibar({ position = "top", screen = s, visible = false })
         s.mywibox:setup {
@@ -396,6 +385,18 @@ awful.screen.connect_for_each_screen(function(s)
           s.mylayoutbox,
         },
       }
+      s.wiboxScreenBroken = awful.wibar({
+        position = "bottom",
+        screen = s,
+        visible = false,
+        bg  = beautiful.bg_normal .. "00",
+        border_color = '#24abc5',
+        border_width = 3,
+        visible      = true,
+        ontop        = true,
+        height       = 29,
+        shape        = gears.shape.rounded_rect,
+      })
     end
   end
 )

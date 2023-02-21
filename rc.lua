@@ -270,6 +270,8 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
-awful.util.spawn("/home/altair/.screenlayout/dualMonMainIzFll.sh")
+awful.util.spawn("/home/altair/.screenlayout/dualMonTv.sh")
+awful.util.spawn("setxkbmap us -variant altgr-intl")
+
 
 dofile(awful.util.getdir("config") .. "/" .. "./test-widgets.lua")
