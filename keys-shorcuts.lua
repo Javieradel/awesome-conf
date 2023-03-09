@@ -221,20 +221,12 @@ clientkeys = gears.table.join(
         {description = "(un)maximize horizontally", group = "client"}),
 
     awful.key(
-        {}, "Print", function () awful.util.spawn("scrot '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'") end),
+        {modkey}, 'F8', function () awful.util.spawn("scrot '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'") end),
     awful.key(
-        {"Control"}, "Print", function () awful.util.spawn("scrot -u -p -e 'xclip -selection clipboard -target image/png -i $f'") end),
+        {modkey}, "F9", function () awful.util.spawn("scrot -u -p -e 'xclip -selection clipboard -target image/png -i $f'") end),
    
     awful.key(
-        {modkey, "Control"}, "Print", function () awful.util.spawn("scrot -sf -e 'xclip -selection clipboard -target image/png -i $f'") end),
-   
-    -- AUTOMATICE FRONT
-    awful.key(
-        {"Shift","Control"}, "ñ",
-        function () 
-            awful.util.spawn("/home/altair/proyects/initSetup.sh")
-        end
-    )
+        { modkey },"Next", function () awful.util.spawn("scrot -s -e 'xclip -selection clipboard -target image/png -i $f'") end)
 )
 
 -- Bind all key numbers to tags.

@@ -370,7 +370,8 @@ awful.screen.connect_for_each_screen(function(s)
       awful.tag.add(" ", tagNoActive)
       awful.tag.add(" ", tagNoActive)
       awful.tag.add(" ", tagNoActive)
-      
+
+      s.mywibox = awful.wibar({ position = "top", screen = s, visible = false })
       s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
