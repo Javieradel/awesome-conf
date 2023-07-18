@@ -41,7 +41,8 @@ globalkeys = gears.table.join(
             local s = awful.screen.focused()
             if s then 
                 --s.wiboxModKeyW.visible= not s.wiboxModKeyW.visible
-                s.mywibox.visible = not s.mywibox.visible 
+                s.mywiboxBotom.visible = not s.mywibox.visible 
+                s.mywiboxTop.visible = not s.mywibox.visible 
             end
         end,
         {description = "custom wibox", group = "user-conf"}),
@@ -226,7 +227,7 @@ clientkeys = gears.table.join(
         {modkey}, "F9", function () awful.util.spawn("scrot -u -p -e 'xclip -selection clipboard -target image/png -i $f'") end),
    
     awful.key(
-        { modkey },"Next", function () awful.util.spawn("scrot -s -e 'xclip -selection clipboard -target image/png -i $f'") end)
+        { modkey },"b", function () awful.util.spawn("scrot -s -e 'xclip -selection clipboard -target image/png -i $f'") end)
 )
 
 -- Bind all key numbers to tags.

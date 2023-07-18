@@ -177,7 +177,7 @@ awful.screen.connect_for_each_screen(
     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     beautiful.wallpaper= continuousWallpaper
-      set_wallpaper(s)
+    set_wallpaper(s)
 
     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -207,17 +207,12 @@ awful.screen.connect_for_each_screen(
     -- TAG LIST
     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      s.mytaglist = awful.widget.taglist {
-        screen  = s,
-        filter  = awful.widget.taglist.filter.all,
-        layout  = wibox.layout.fixed.horizontal,
-        buttons = taglist_buttons,
-        bg      = beautiful.bg_normal .. '00',
-        --widget_template = template_tag,
-
-        --update_function = update_Tag,
-        --width = 60,
-        --height = 60
+    s.mytaglist = awful.widget.taglist {
+      screen  = s,
+      filter  = awful.widget.taglist.filter.all,
+      layout  = wibox.layout.fixed.horizontal,
+      buttons = taglist_buttons,
+      bg      = beautiful.bg_normal .. '00',
     }
     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -247,10 +242,6 @@ awful.screen.connect_for_each_screen(
       layout  = wibox.layout.fixed.horizontal,
       buttons = taglist_buttons,
       bg      = beautiful.bg_normal .. '00',
-      --widget_template = template_tag,
-      --update_function = update_Tag,
-      --width = 60,
-      --height = 60
     }
     s.wiboxModKeyW: setup {
       widget = s.mytaglist
@@ -275,7 +266,6 @@ awful.screen.connect_for_each_screen(
   --  WIDGETS CONF
     
 awful.screen.connect_for_each_screen(function(s)
-    if s.index == 1 then
         local ram_widget_conf = {
           timeout = 15,
           widget_show_buf= true,
@@ -288,10 +278,9 @@ awful.screen.connect_for_each_screen(function(s)
           color = '#33d1d6',
           timeout = 1
       }
-        --awful.tag({ "browser","servers", "notile"}, s, awful.layout.layouts[1])
         awful.tag.add(" ", {
             --icon               = "/home/altair/Imagenes/globe2.svg",
-            --layout             = awful.layout.layouts[9],
+            layout             = awful.layout.layouts[5],
             --master_fill_policy = "master_width_factor",
             gap_single_client  = true,
             --gap                = 15,
@@ -300,7 +289,8 @@ awful.screen.connect_for_each_screen(function(s)
         })
         awful.tag.add(" ", {
             --icon               = "/path/to/icon1.png",
-            -- layout             = awful.layout.layouts[12],
+            layout             = awful.layout.layouts[5],
+
             --master_fill_policy = "master_width_factor",
             --gap_single_client  = true,
             --gap                = 15,
@@ -309,7 +299,8 @@ awful.screen.connect_for_each_screen(function(s)
         })
         awful.tag.add(" ", {
             --icon               = "/path/to/icon1.png",
-            -- layout             = awful.layout.layouts[10],
+            layout             = awful.layout.layouts[5],
+
             --master_fill_policy = "master_width_factor",
             --gap_single_client  = true,
             --gap                = 15,
@@ -318,7 +309,8 @@ awful.screen.connect_for_each_screen(function(s)
         })
         awful.tag.add(" ", {
             --icon               = "/path/to/icon1.png",
-            -- layout             = awful.layout.layouts[10],
+            layout             = awful.layout.layouts[5],
+
             --master_fill_policy = "master_width_factor",
             --gap_single_client  = true,
             --gap                = 15,
@@ -327,52 +319,29 @@ awful.screen.connect_for_each_screen(function(s)
             
         })
         
-        --beautiful.wallpaper= '/home/altair/Descargas/imgs/wallpaper11.jpg' 
-        --beautiful.wallpaper= '/home/altair/Descargas/imgs/wall3.jpg' 
-        --set_wallpaper(1)
-        
-        
-        s.mywibox = awful.wibar({ position = "top", screen = s, visible = false })
-        s.mywibox:setup {
+        s.mywiboxTop = awful.wibar({ position = "top", screen = s, visible = false })
+        s.mywiboxTop:setup {
             visible = true,
             layout = wibox.layout.align.horizontal,
             { -- Left widgets
                 layout = wibox.layout.fixed.horizontal,
                 termalWidget,
             },
-            -- Middle widget
-            s.mytasklist,
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
                 wibox.widget.systray(),
                 mytextclock,
                 mytextclock2,
-                s.mylayoutbox,
                 ram_widget(ram_widget_conf),
                 cpu_widget(cpu_widget_conf),
                 net_speed_widget(),
                 logout_menu_widget()
             },
         }
-    end
-    if s.index == 2 then
       local volume_widget_conf ={ widget_type = 'arc' }
-      local tagCode =  {
-      screen   = s,
-      selected = true,
-      }
-      local tagNoActive = {
-      screen   = s,
-      selected = false,
-      }
 
-      awful.tag.add(" ", tagCode    )
-      awful.tag.add(" ", tagNoActive)
-      awful.tag.add(" ", tagNoActive)
-      awful.tag.add(" ", tagNoActive)
-
-      s.mywibox = awful.wibar({ position = "top", screen = s, visible = false })
-      s.mywibox:setup {
+      s.mywiboxBotom = awful.wibar({ position = "bottom", screen = s, visible = false })
+      s.mywiboxBotom:setup {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
@@ -386,19 +355,5 @@ awful.screen.connect_for_each_screen(function(s)
           s.mylayoutbox,
         },
       }
-      s.wiboxScreenBroken = awful.wibar({
-        position = "bottom",
-        screen = s,
-        visible = false,
-        bg  = beautiful.bg_normal .. "00",
-        border_color = '#24abc5',
-        border_width = 3,
-        visible      = true,
-        ontop        = true,
-        height       = 29,
-        shape        = gears.shape.rounded_rect,
-      })
-    end
   end
 )
-
